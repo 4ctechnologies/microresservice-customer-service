@@ -1,0 +1,36 @@
+server:
+    port: 0
+
+eureka:
+    instance:
+        leaseRenewalIntervalInSeconds: 3
+        metadataMap:
+            instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${random.value}}}
+    client:
+        registryFetchIntervalSeconds: 5
+        instanceInfoReplicationIntervalSeconds: 5
+        initialInstanceInfoReplicationIntervalSeconds: 5
+
+logging:
+    level:
+        root: WARN
+        be.foreseegroup: INFO
+
+---
+spring:
+    profiles: docker
+    data:
+        mongodb:
+            host: customermongo
+    rabbitmq:
+        host: rabbitmq
+
+server:
+    port: 8080
+
+eureka:
+    instance:
+        preferIpAddress: true
+    client:
+        serviceUrl:
+            defaultZone: http://discovery:8761/eureka/
